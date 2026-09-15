@@ -76,7 +76,7 @@ class KiwixSearchHelper:
                             "article_id": article_id,
                         }
                     )
-        results = results[:10] # limit to 10 results
+        results = results[:10]  # limit to 10 results
         formatted_results = self.format_results(results)
         await self.event_emitter(
             {
@@ -90,9 +90,7 @@ class KiwixSearchHelper:
         )
         return formatted_results
 
-    async def view_page(
-        self, article_id: str, page_content_words_limit: int
-    ) -> str:
+    async def view_page(self, article_id: str, page_content_words_limit: int) -> str:
         """
         View the content of a page by its article ID.
         :param article_id: The article ID of the page to view.
@@ -131,6 +129,8 @@ class KiwixSearchHelper:
         return int(len(text) / 4)
 
     def format_results(self, results: list) -> str:
+        if not results:
+            return "No results found. Hint: use one or two keywords for query, long list of keywords may cause no results, correct user typos if any."
         formatted = ""
         for result in results:
             formatted += f"book_name: {result['from_book']}\n"
@@ -178,7 +178,7 @@ class Tools:
             books=self.valves.BOOKS,
         )
         if len(results) == 0:
-            results = "No results found. Hint: use one or two keywords for query, long list of keywords may cause no results."
+            results = "No results found. Hint: use one or two keywords for query, long list of keywords may cause no results, correct user typos if any."
         return results
 
     async def kiwix_view_article(
